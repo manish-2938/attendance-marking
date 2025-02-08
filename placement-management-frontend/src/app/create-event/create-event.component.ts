@@ -52,7 +52,7 @@ export class CreateEventComponent {
         }))
       };
 
-      this.http.post('http://localhost:5000/api/events', payload)
+      this.http.post('http://localhost:5000/api/events', payload, { withCredentials: true })
         .subscribe({
           next: () =>{ alert('Event created successfully!');
             this.router.navigate(['/admin-dashboard']);

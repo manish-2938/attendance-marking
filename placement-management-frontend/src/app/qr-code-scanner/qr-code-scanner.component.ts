@@ -21,21 +21,22 @@ export class QrCodeScannerComponent {
       this.scannedResult = JSON.parse(result); // Convert QR code string to JSON
       
       // Check if required data exists
-      if (!this.scannedResult.eventId || !this.scannedResult.studentId) {
+      if (!this.scannedResult.eventId) {
         alert('Invalid QR Code');
         return;
       }
 
       // Send attendance data to backend
-      this.markAttendance(this.scannedResult.eventId, this.scannedResult.studentId);
+      this.markAttendance(this.scannedResult.eventId, this.scannedResult.firstName, this.scannedResult.lastName, this.scannedResult.rollNumber, this.scannedResult.department);
     } catch (error) {
       alert('Invalid QR Code format');
     }
   }
 
-  markAttendance(eventId: string, studentId: string): void {
-    console.log('Sending data:', { eventId, studentId });
-    this.http.post('http://localhost:5000/api/attendance/mark', { eventId, studentId })
+  markAttendance(eventId: string, firstName: string, lastName: string, rollNumber: string, department: string): void {
+    console.log('Sending data:', { eventId, firstName, lastName, rollNumber, department });
+    try{
+    this.http.post('http://localhost:5000/api/attendance/mark', { eventId, firstName, lastName, rollNumber, department })
       .subscribe({
         next: (response) => {
           alert('Attendance marked successfully!');
@@ -44,6 +45,10 @@ export class QrCodeScannerComponent {
           alert('Error marking attendance: ' + error.message);
         }
       });
+    }
+    catch (error){
+      console.log(error);
+    }
   }
 }
 

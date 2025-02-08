@@ -14,6 +14,7 @@ import { QrCodeComponent } from '../qr-code/qr-code.component';
 export class EventDetailsComponent implements OnInit {
   event: any = null;
   qrCode: boolean = false;
+  student:any = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -21,6 +22,15 @@ export class EventDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.http.get('http://localhost:5000/api/students/getStudent', { withCredentials: true })
+    .subscribe({
+      next: (data) => {
+        this.student = data;
+      },
+      error: () => {
+        console.error('Failed to fetch student details.');
+      }
+    });
     const eventId = this.route.snapshot.paramMap.get('id');
     this.fetchEventDetails(eventId);
   }
@@ -28,7 +38,7 @@ export class EventDetailsComponent implements OnInit {
   fetchEventDetails(eventId: string | null): void {
     if (eventId) {
       this.http
-        .get<any>(`http://localhost:5000/api/events/${eventId}`)
+        .get<any>(`http://localhost:5000/api/events/${eventId}`, {withCredentials: true})
         .subscribe({
           next: (data) => {
             this.event = data;

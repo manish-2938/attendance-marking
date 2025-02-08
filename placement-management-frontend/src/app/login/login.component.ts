@@ -22,7 +22,7 @@ export class LoginComponent {
   onSubmit() {
     const user = { rollNumber: this.rollNumber, password: this.password };
 
-    this.http.post('http://localhost:5000/api/login', user)
+    this.http.post('http://localhost:5000/api/login', user, { withCredentials: true })
       .subscribe({
         next: () => {alert('User signed up successfully'); this.router.navigate(['/main'])},
         error: (err) => {this.errorMessage = err.error

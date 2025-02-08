@@ -2,11 +2,12 @@ const express = require('express');
 const { getEvents, createEvent} = require('../controllers/eventController');
 const router = express.Router();
 const Event = require('../models/event');
+const authMiddleware = require('../middlewares/auth');
 
-router.get('/', getEvents);
-router.post('/', createEvent);
+router.get('/', authMiddleware, getEvents);
+router.post('/', authMiddleware, createEvent);
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', authMiddleware, async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
     if (!event) {

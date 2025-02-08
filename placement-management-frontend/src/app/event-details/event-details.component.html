@@ -16,10 +16,12 @@
           <app-qr-code
             [eventId]="event._id"
             [eventName]="event.name"
+            [firstName]="student.firstName"
+            [lastName] = "student.lastName"
+            [rollNumber]="student.rollNumber"
+            [department]="student.department"
           ></app-qr-code>       
-          <!-- [studentName]="student.name"
-          [rollNumber]="student.rollNumber"
-          [branch]="student.branch" -->
+          
       </div>
     <ng-template #loading>
       <p>Loading event details...</p>

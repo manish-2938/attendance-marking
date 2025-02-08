@@ -17,8 +17,8 @@
       <div *ngIf="!scannedResult.error; else errorTemplate">
         <p class="text-lg mb-2"><strong>1. Name of Event:</strong> {{ scannedResult.eventName || 'N/A' }}</p>
         <p class="text-lg mb-2"><strong>2. Roll Number of Student:</strong> {{ scannedResult.rollNumber || 'N/A' }}</p>
-        <p class="text-lg mb-2"><strong>3. Name of Student:</strong> {{ scannedResult.studentName || 'N/A' }}</p>
-        <p class="text-lg mb-4"><strong>4. Branch of Student:</strong> {{ scannedResult.branch || 'N/A' }}</p>
+        <p class="text-lg mb-2"><strong>3. Name of Student:</strong> {{ scannedResult.firstName || 'N/A' }} {{scannedResult.lastName || 'N/A'}}</p>
+        <p class="text-lg mb-4"><strong>4. Branch of Student:</strong> {{ scannedResult.department || 'N/A' }}</p>
       </div>
   
       <!-- Error Message for Invalid QR Code -->

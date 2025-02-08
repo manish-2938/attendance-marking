@@ -1,4 +1,6 @@
 const Student = require('../models/student');
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = "hello";
 
 // Get all students
 const getStudents = async (req, res) => {
@@ -23,4 +25,25 @@ const addStudent = async (req, res) => {
     }
 };
 
-module.exports = { getStudents, addStudent };
+const getStudent = async (req, res) => {
+    try {
+        const token = req.cookies.token;
+        const userId = jwt.verify(token, SECRET_KEY);
+        const student = await Student.findOne({rollNumber: userId.rollNumber});
+        if (!student) {
+            return res.status(401).json({ error: 'Not authenticated' });
+        }
+        if (!student) {
+            return res.status(404).json({ error: 'Student not found' });
+        }
+  
+        res.json(student);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+  };
+
+
+
+module.exports = { getStudents, addStudent, getStudent };

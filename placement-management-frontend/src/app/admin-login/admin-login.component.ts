@@ -22,7 +22,7 @@ export class AdminLoginComponent {
   onSubmit() {
     const user = { username: this.username, password: this.password };
 
-    this.http.post('http://localhost:5000/api/admin-login', user)
+    this.http.post('http://localhost:5000/api/admin-login', user, { withCredentials: true })
       .subscribe({
         next: () => this.router.navigate(['/admin-dashboard']),
         error: (err) => this.errorMessage = err.error

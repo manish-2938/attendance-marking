@@ -7,20 +7,20 @@ const { generateAttendanceExcel } = require('../utils/excelService');
 router.post('/mark', async (req, res) => {
     try {
         console.log('Received QR Scan Data:', req.body);
-        const { eventId, studentId } = req.body;
+        const { eventId, firstName, lastName, rollNumber, department } = req.body;
 
-        if (!eventId || !studentId) {
+        if (!eventId || !firstName || !lastName || !rollNumber || !department) {
             return res.status(400).json({ message: 'Missing eventId or studentId' });
         }
 
         // Check if attendance is already recorded
-        const existingRecord = await Attendance.findOne({ eventId, studentId });
+        const existingRecord = await Attendance.findOne({ eventId, firstName, lastName, rollNumber, department });
         if (existingRecord) {
             return res.status(400).json({ message: 'Attendance already marked' });
         }
 
         // Create a new attendance entry
-        const attendance = new Attendance({ eventId, studentId });
+        const attendance = new Attendance({ eventId, firstName, lastName, rollNumber, department });
         await attendance.save();
 
         res.status(201).json({ message: 'Attendance marked successfully' });
@@ -37,19 +37,16 @@ router.get('/export/:eventId', async (req, res) => {
         console.log(eventId);
 
         // Fetch attendance data
-        const attendanceRecords = await Attendance.find({ eventId })
-            .populate('studentId', 'firstName lastName rollNumber department');
-
+        const attendanceRecords = await Attendance.find({ eventId });
         console.log(attendanceRecords);
         if (!attendanceRecords.length) {
             return res.status(404).json({ message: 'No attendance records found' });
         }
-
-        // Format data for Excel
         const attendanceData = attendanceRecords.map(record => ({
-            'Student Name': record.studentId.firstName + " " + record.studentId.lastName,
-            'Roll Number': record.studentId.rollNumber,
-            'Branch': record.studentId.department,
+            'First Name': record.firstName,
+            'Last Name' : record.lastName,
+            'Roll Number': record.rollNumber,
+            'Branch': record.department,
             'Timestamp': Date.now(),
         }));
         console.log(attendanceData);

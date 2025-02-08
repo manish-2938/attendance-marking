@@ -12,22 +12,23 @@ import { QRCodeComponent } from 'angularx-qrcode';
 export class QrCodeComponent implements OnInit {
   @Input() eventId: string ='';
   @Input() eventName: string = '';
-  @Input() studentId: string = '';
+  @Input() firstName: string ='';
+  @Input() lastName: string ='';
   @Input() rollNumber: string = '';
-  @Input() branch: string = '';
+  @Input() department: string = '';
  
   qrData: string = '';
 
   ngOnInit(): void {
+    console.log(this.firstName)
     // Generate QR data as JSON string
     this.qrData = JSON.stringify({
       eventName:this.eventName,
       eventId: this.eventId,
-      studentId: '679e0a73de5a299fd35017c1',
-      // rollNumber: this.rollNumber,
-      // branch: this.branch,
-      rollNumber: '160121735104',
-      branch: 'ECE',
+      firstName: this.firstName,
+      lastName: this.lastName,
+      rollNumber: this.rollNumber,
+      department: this.department,
     });
   }
 }
